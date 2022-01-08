@@ -1,0 +1,3 @@
+#!/usr/bin/python3
+def no_c(my_string):
+    final_username = my_string.translate({ ord("c", "C"): None })
