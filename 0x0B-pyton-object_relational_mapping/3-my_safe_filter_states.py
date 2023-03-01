@@ -1,25 +1,18 @@
 #!/usr/bin/python3
-"""SQL injection-safe script to query by argument input"""
-import MySQLdb
+"""
+Lists all values in the states tables of a database where name
+matches the argument in a safe way
+"""
 import sys
+import MySQLdb
 
+if __name__ == '__main__':
+    db = MySQLdb.connect(user=sys.argv[1], passwd=sys.argv[2],
+                         db=sys.argv[3], port=3306)
 
-def print_state_id():
-    db = MySQLdb.connect(host='localhost',
-                         port=3306,
-                         user=sys.argv[1],
-                         passwd=sys.argv[2],
-                         database=sys.argv[3])
     cur = db.cursor()
-    cur.execute("SELECT * FROM states WHERE name LIKE %s\
-                ORDER BY id", (sys.argv[4],))
+    cur.execute("SELECT * FROM states WHERE name = %s;", (sys.argv[4],))
+    states = cur.fetchall()
 
-    for row in cur.fetchall():
-        print(row)
-
-    cur.close()
-    db.close()
-
-
-if __name__ == "__main__":
-    print_state_id()
+    for state in states:
+        print(state)
